@@ -146,12 +146,14 @@ bool TcpCom::Listen() {
 /*
  * Wait For Connection From Client
  */
-int TcpCom::Accept(TcpCom *remote) {
-    struct sockaddr_in remoteAddr = remote->GetSockAddr();
+string TcpCom::Accept() {
+    struct sockaddr_in remoteAddr;
     int len = sizeof(struct sockaddr_in);
-    if(accept(m_socketFd, (struct sockaddr *)&remoteAddr, &len) == -1)
-        return false;
-    return true;
+    m_sockConnect = accept(m_socketFd, (struct sockaddr *)&remoteAddr, &len);
+    if(m_sockConnect == -1)
+        return "";
+    else
+        return inet_ntoa(remoteAddr.sin_addr);
 }
 
 /*
@@ -159,7 +161,7 @@ int TcpCom::Accept(TcpCom *remote) {
  */
 int TcpCom::TcpSend(const char *sndData, int size, int flags) {
     if(m_socketFd > 0)
-        return send(m_socketFd, sndData, size, flags);
+        return send(m_sockConnect, sndData, size, flags);
     return TCP_SEND_FAIL;
 }
 
@@ -169,7 +171,7 @@ int TcpCom::TcpSend(const char *sndData, int size, int flags) {
 int TcpCom::TcpReceive(char *recvData, int size, int flags) {
     if(m_socketFd > 0) {
         int recvLength = 0;
-        recvLength = recv(m_socketFd, recvData, size, flags);
+        recvLength = recv(m_sockConnect, recvData, size, flags);
         return recvLength;
     }
     

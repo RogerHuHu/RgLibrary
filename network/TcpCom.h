@@ -38,24 +38,24 @@ const int TCP_NONBLOCK = 0;
 const int TCP_BLOCK = 1;
 
 /***************************************
- * \brief TCP Communication
+ * \brief TCP communication
  * *************************************/
 class TcpCom {
 public:
     /************************************************
-     * \brief  Default Constructor 
+     * \brief  Default constructor 
      ***********************************************/
     TcpCom() {}
 
     /************************************************
-     * \brief  Local Constructor
+     * \brief  Local constructor
      *
      * \param port  local port
      ***********************************************/
     TcpCom(unsigned short port);
 
     /************************************************
-     * \brief  Remote Constructor
+     * \brief  Remote constructor
      *
      * \param ip  remote ip address
      * \param port  remote port
@@ -63,7 +63,7 @@ public:
     TcpCom(const string &ip, unsigned short port);
 
     /************************************************
-     * \brief Remote Constructor
+     * \brief Remote constructor
      *
      * \param ip  remote ip address
      * \param port  remote port
@@ -72,7 +72,7 @@ public:
     TcpCom(const string &ip, unsigned short port, int backlog);
 
     /************************************************
-     * \brief Copy Constuctor
+     * \brief Copy constuctor
      *
      * \param copy
      ***********************************************/
@@ -96,21 +96,21 @@ public:
 #endif
 
     /************************************************
-     * \brief Get Socket File Descriptor
+     * \brief Get socket file descriptor
      *
      * \return socket file descriptor
      ***********************************************/
     int GetSocketFd() const { return m_socketFd; }
 
     /************************************************
-     * \brief Get Address of Socket
+     * \brief Get address of socket
      *
      * \return address of socket
      ***********************************************/
     struct sockaddr_in GetSockAddr() const { return m_socketAddr; }
 
     /************************************************
-     * \brief Set Block or NonBlock
+     * \brief Set block or nonBlock
      *
      * \param blockMode  block or nonblock
      *
@@ -119,7 +119,7 @@ public:
     bool SetBlockMode(int blockMode);
 
     /************************************************
-     * \brief Set Backlog
+     * \brief Set backlog
      *
      * \param backlog
      *
@@ -128,7 +128,7 @@ public:
     void SetBacklog(int backlog);
 
     /************************************************
-     * \brief Connect To TCP Server
+     * \brief Connect to TCP server
      *
      * \param remote  tcp server
      *
@@ -137,28 +137,28 @@ public:
     bool Connect(TcpCom *remote);
 
     /************************************************
-     * \brief DisConnect The Connection Between Two TCP Parts
+     * \brief DisConnect the connection between two TCP parts
      *
      * \return disconnect result (true/false)
      ***********************************************/
     bool DisConnect();
 	
 	/************************************************
-     * \brief Create A Socket And Listen The Request of Connection
+     * \brief Create a socket and listen the request of connection
      *
      * \return listen result (true/false)
      ***********************************************/
 	bool Listen();
 
     /************************************************
-     * \brief Wait For Connection From Client
+     * \brief Wait for connection from client
      *
-     * \return 
+     * \return remote ip address
      ***********************************************/
-    int Accept(TcpCom *remote);
+    string Accept();
 
     /************************************************
-     * \brief Send TCP Data
+     * \brief Send TCP data
      *
      * \param sndData  send data buffer
      * \param size  send data buffer size
@@ -169,7 +169,7 @@ public:
     int TcpSend(const char *sndData, int size, int flags = 0); 
     
     /************************************************
-     * \brief Receive TCP Data
+     * \brief Receive TCP data
      *
      * \param recvData  receive data buffer
      * \param size  receive data buffer size
@@ -178,10 +178,22 @@ public:
      * \return the length of data receive successfully, -1 means receive failed
      ***********************************************/
     int TcpReceive(char *recvData, int size, int flags = 0);
+    
+    /************************************************
+     * \brief Get the value of socket connection
+     *
+     * \param recvData  receive data buffer
+     * \param size  receive data buffer size
+     * \param flags  
+     *
+     * \return the length of data receive successfully, -1 means receive failed
+     ***********************************************/
+    int GetSockConnect() const { return m_sockConnect; }
 private:
     struct sockaddr_in m_socketAddr;  //internet socket address
     int m_socketFd;  //socket file descriptor
     int m_backlog;  //max length of queue which wait for connecting
+    int m_sockConnect;  //socket connection
 };
 }
 
