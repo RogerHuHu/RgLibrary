@@ -37,6 +37,9 @@ const int TCP_SEND_FAIL = -1;
 const int TCP_NONBLOCK = 0;
 const int TCP_BLOCK = 1;
 
+const int SERVER = 0;
+const int CLIENT = 1;
+
 /***************************************
  * \brief TCP communication
  * *************************************/
@@ -51,8 +54,9 @@ public:
      * \brief  Local constructor
      *
      * \param port  local port
+     * \param type  socket type
      ***********************************************/
-    TcpCom(unsigned short port);
+    TcpCom(unsigned short port, int type);
 
     /************************************************
      * \brief  Remote constructor
@@ -161,12 +165,11 @@ public:
      * \brief Send TCP data
      *
      * \param sndData  send data buffer
-     * \param size  send data buffer size
      * \param flags 
      *
      * \return the length of data send successfully
      ***********************************************/
-    int TcpSend(const string &sndData, int size, int flags = 0); 
+    int TcpSend(const string &sndData, int flags = 0); 
     
     /************************************************
      * \brief Receive TCP data
@@ -188,8 +191,9 @@ public:
      * \return the length of data receive successfully, -1 means receive failed
      ***********************************************/
     int GetSockConnect() const { return m_sockConnect; }
-private:
+    private:
     struct sockaddr_in m_socketAddr;  //internet socket address
+    int *m_localSockFd;  //local socket file descriptor
     int m_socketFd;  //socket file descriptor
     int m_backlog;  //max length of queue which wait for connecting
     int m_sockConnect;  //socket connection

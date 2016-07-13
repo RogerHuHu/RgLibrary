@@ -6,14 +6,14 @@
  * @date 2016-07-10
  ***********************************************/
 #include "TcpCom.h"
-
+#include <iostream>
 using namespace std;
 
 namespace network {
 /*
  * Local Constructor 
  */
-TcpCom::TcpCom(unsigned short port) : m_backlog(1) {
+TcpCom::TcpCom(unsigned short port, int type) : m_backlog(1) {
     m_socketFd = -1;
 #if (defined _WIN32) || (defined _WIN64)
     if(!WinsockInit(2, 2)) {
@@ -22,6 +22,11 @@ TcpCom::TcpCom(unsigned short port) : m_backlog(1) {
     }
 #endif
     if(m_socketFd == -1) {
+        if(type == SERVER)
+            m_localSockFd = &m_sockConnect;
+        else if(type == CLIENT)
+            m_localSockFd = &m_socketFd;
+            
         m_socketFd = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
         memset(&m_socketAddr, 0, sizeof(struct sockaddr_in));  //clear struct m_socketAddr
         m_socketAddr.sin_family = AF_INET;  //address type is AF_INET
@@ -157,9 +162,9 @@ string TcpCom::Accept() {
 /*
  * Send TCP Data
  */
-int TcpCom::TcpSend(const string &sndData, int size, int flags) {
-    if(m_sockConnect > 0)
-        return send(m_sockConnect, sndData.c_str(), size, flags);
+int TcpCom::TcpSend(const string &sndData, int flags) {
+    if(*m_localSockFd > 0)
+        return send(*m_localSockFd, sndData.c_str(), sndData.size(), flags);
     return TCP_SEND_FAIL;
 }
 
@@ -167,9 +172,9 @@ int TcpCom::TcpSend(const string &sndData, int size, int flags) {
  * Receive TCP Data
  */
 int TcpCom::TcpReceive(string &recvData, int flags) {
-    if(m_socketFd > 0) {
+    if(*m_localSockFd > 0) {
         int recvLength = 0;
-        recvLength = recv(m_socketFd, m_recvData, BUFFER_LENGTH, flags);
+        recvLength = recv(*m_localSockFd, m_recvData, BUFFER_LENGTH, flags);
         recvData = m_recvData;
         return recvLength;
     }
