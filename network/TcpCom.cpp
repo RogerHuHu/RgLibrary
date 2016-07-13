@@ -5,7 +5,6 @@
  * @version V1.1.0
  * @date 2016-07-10
  ***********************************************/
-
 #include "TcpCom.h"
 
 using namespace std;
@@ -27,7 +26,7 @@ TcpCom::TcpCom(unsigned short port) : m_backlog(1) {
         memset(&m_socketAddr, 0, sizeof(struct sockaddr_in));  //clear struct m_socketAddr
         m_socketAddr.sin_family = AF_INET;  //address type is AF_INET
         m_socketAddr.sin_port = htons(port);  //local port
-        m_socketAddr.sin_addr.s_addr = INADDR_ANY;  //any local ip address
+        m_socketAddr.sin_addr.s_addr = htonl(INADDR_ANY);  //any local ip address
         bind(m_socketFd, (struct sockaddr *)(&m_socketAddr), sizeof(struct sockaddr));
     }
 }
@@ -119,11 +118,10 @@ void TcpCom::SetBacklog(int backlog) {
  * Connect To TCP Server
  */
 bool TcpCom::Connect(TcpCom *remote) {
-    int socketFd = remote->GetSocketFd();
-	struct sockaddr_in remoteAddr = remote->GetSockAddr();
-    if(socketFd > 0)
-        return (connect(socketFd, (struct sockaddr *)&remoteAddr,
-                    sizeof(struct sockaddr)) != -1);
+	struct sockaddr_in remoteSockAddr = remote->GetSockAddr();
+    if(m_socketFd > 0) 
+        return (connect(m_socketFd, (struct sockaddr *)&remoteSockAddr,
+                    sizeof(struct sockaddr)) == 0);
     return false;
 }
 
@@ -140,7 +138,7 @@ bool TcpCom::DisConnect() {
  * Create A Socket And Listen The Request of Connection
  */
 bool TcpCom::Listen() {
-	return listen(m_socketFd, m_backlog) == -1;
+	return listen(m_socketFd, m_backlog) != -1;
 }
 
 /*
@@ -159,19 +157,20 @@ string TcpCom::Accept() {
 /*
  * Send TCP Data
  */
-int TcpCom::TcpSend(const char *sndData, int size, int flags) {
-    if(m_socketFd > 0)
-        return send(m_sockConnect, sndData, size, flags);
+int TcpCom::TcpSend(const string &sndData, int size, int flags) {
+    if(m_sockConnect > 0)
+        return send(m_sockConnect, sndData.c_str(), size, flags);
     return TCP_SEND_FAIL;
 }
 
 /*
  * Receive TCP Data
  */
-int TcpCom::TcpReceive(char *recvData, int size, int flags) {
+int TcpCom::TcpReceive(string &recvData, int flags) {
     if(m_socketFd > 0) {
         int recvLength = 0;
-        recvLength = recv(m_sockConnect, recvData, size, flags);
+        recvLength = recv(m_socketFd, m_recvData, BUFFER_LENGTH, flags);
+        recvData = m_recvData;
         return recvLength;
     }
     

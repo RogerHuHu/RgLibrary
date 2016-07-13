@@ -166,18 +166,17 @@ public:
      *
      * \return the length of data send successfully
      ***********************************************/
-    int TcpSend(const char *sndData, int size, int flags = 0); 
+    int TcpSend(const string &sndData, int size, int flags = 0); 
     
     /************************************************
      * \brief Receive TCP data
      *
      * \param recvData  receive data buffer
-     * \param size  receive data buffer size
      * \param flags  
      *
      * \return the length of data receive successfully, -1 means receive failed
      ***********************************************/
-    int TcpReceive(char *recvData, int size, int flags = 0);
+    int TcpReceive(string &recvData, int flags = 0);
     
     /************************************************
      * \brief Get the value of socket connection
@@ -194,6 +193,7 @@ private:
     int m_socketFd;  //socket file descriptor
     int m_backlog;  //max length of queue which wait for connecting
     int m_sockConnect;  //socket connection
+    char m_recvData[BUFFER_LENGTH];
 };
 }
 
