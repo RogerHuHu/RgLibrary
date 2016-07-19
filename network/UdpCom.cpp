@@ -7,7 +7,7 @@
  ***********************************************/
 
 #include <iostream>
-#include "UdpCom.h"
+#include "UdpCom.hpp"
 
 using namespace std;
 

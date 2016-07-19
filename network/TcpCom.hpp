@@ -30,7 +30,7 @@
 
 using std::string;
 
-namespace network{
+namespace network {
     
 const int BUFFER_LENGTH = 2048;
 const int TCP_SEND_FAIL = -1;

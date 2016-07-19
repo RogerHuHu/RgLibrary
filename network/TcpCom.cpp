@@ -5,7 +5,7 @@
  * @version V1.1.0
  * @date 2016-07-10
  ***********************************************/
-#include "TcpCom.h"
+#include "TcpCom.hpp"
 #include <iostream>
 using namespace std;
 

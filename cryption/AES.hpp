@@ -2,7 +2,7 @@
 #define _AES_H_
 
 #include <string.h>
-#include "AESResource.h"
+#include "AESResource.hpp"
 
 namespace cryption {
 
