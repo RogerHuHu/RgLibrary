@@ -19,8 +19,10 @@
 #endif
 
 #include <string>
+#include <chrono>
 
 namespace time {
+
 /***************************************
  * \brief Date time
  * *************************************/
@@ -136,21 +138,57 @@ class DateTime {
     int GetSecond() const { return m_second; }
     
     /************************************************
+     * \brief Convert from std::tm to seconds from 1970-01-01
+     *
+     * \return seconds from 1970-01-01
+     *************************************************/
+    std::time_t ToSecondsFrom1970_1_1(std::tm tm_time);
+
+    /************************************************
      * \brief Get current seconds from 1970-01-01
      *
      * \return seconds from 1970-01-01
      *************************************************/
-    time_t GetSecondsFrom1970_1_1();
+    std::time_t GetSecondsFrom1970_1_1();
     
     /************************************************
      * \brief Get current UTC time
      *************************************************/
-    void GetCurrentUTCTime();
+    std::tm GetCurrentUTCTime();
+
+    /************************************************
+     * \brief Get current UTC time
+     *
+     * \param format  
+     *************************************************/
+    string GetCurrentUTCTime(const char *format);
     
     /************************************************
      * \brief Get current local time
      *************************************************/
-    void GetCurrentLocalTime();
+    std::tm GetCurrentLocalTime();
+
+    /************************************************
+     * \brief Get current local time
+     *
+     * \param format
+     *************************************************/
+    std::tm GetCurrentLocalTime(const char *format);
+
+    /************************************************
+     * \brief Convert from std::tm to string
+     *
+     * \param format
+     *************************************************/
+    string ToString(const char *format)
+
+    /************************************************
+     * \brief Convert time format from std::tm to normal 
+     * year, month, day, hour, minute, second
+     *
+     * \param tm_time  
+     *************************************************/
+    void ConvertFormat(std::tm tm_time);
     
     /************************************************
      * \brief To caculate a year value is leapyear or not
@@ -159,7 +197,7 @@ class DateTime {
      ***********************************************/
     bool IsLeapYear(int year);
 private:
-    string m_format;  //format of datetime
+    std::string m_format;  //format of datetime
     int m_year;
     int m_month;
     int m_day;
