@@ -16,10 +16,10 @@
 namespace file {
 
 typedef enum FileErrorType {
-    OK = 0;
-    FILE_NAME_EMPTY = 1;
-    FILE_EXISTS = 2;
-    FILE_STREAM_ABNORMAL = 3;
+    OK = 0,
+    FILE_NAME_EMPTY = 1,
+    FILE_EXISTS = 2,
+    FILE_STREAM_ABNORMAL = 3,
 } FileErrorT_
 
 /***************************************
@@ -110,6 +110,15 @@ public:
      * \brief Close file 
      ***********************************************/
     void CloseFile();
+    
+    /************************************************
+     * \brief Read file 
+     *
+     * \param fileName  name of file to open
+     * \paran mode      file open mode
+     *
+     * \return open resut
+     ***********************************************/
 private:
     std::fstream m_fs;
     std::string m_fileName;
