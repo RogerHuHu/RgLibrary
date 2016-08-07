@@ -200,7 +200,7 @@ FileErrorT_ File::Rename(const std::string &oldName, const std::string &newName)
  * Copy file 
  */
 FileErrorT_ File::Copy(const std::string &dstFileName) {
-    
+    return Copy(new File(dstFileName, std::ios_base::in)); 
 }
 
 /*
@@ -212,11 +212,14 @@ FileErrorT_ File::Copy(File *dstFile) {
     errCode = dstFile->OpenFile();
     if(errCode != OK) return errCode;
     
+    //Check whether source and destination file stream is good
     if(!m_fs.good() || !dstFile->m_fs.good()) {
         CloseFile();
         dstFile->CloseFile();
         return FILE_STREAM_ABNORMAL;
     }
-    
+
+    dstFile->m_fs << m_fs.rdbuf();
+    return OK;
 }
 }
