@@ -1,24 +1,39 @@
 /************************************************
- * @file Rlog.h
+ * @file Rlog.hpp
  * \brief 
  * @author Roger
  * @version V1.1.0
  * @date 2016-07
  ***********************************************/
  
- #ifndef _R_LOG_H_
- #define _R_LOG_H_
+#ifndef _R_LOG_H_
+#define _R_LOG_H_
  
- #include <iostream>
+#include <iostream>
+
+using namespace file;
+class Directory;
+class File;
+class FileInfo;
  
- namespace log {
+namespace log {
 /***************************************
  * \brief log module
  * *************************************/
  
- enum APPENDERS { TERMINAL = 0, FILE = 1 };
- enum LOG_INFO_SOURCE { CODE = 0, RESOURCE_FILE = 1 };
- enum LOG_LEVEL { DEBUG = 0, INFO = 1, WARN = 2, ERROE = 3, FATAL = 4 };
+enum APPENDERS { TERMINAL = 0, FILE = 1 };
+enum LOG_INFO_SOURCE { CODE = 0, RESOURCE_FILE = 1 };
+enum LOG_LEVEL { DEBUG = 0, INFO = 1, WARN = 2, ERROE = 3, FATAL = 4 };
+
+typedef enum LogErrorType {
+    LOG_OK = 0,
+    LOG_FILE_OPEN_FIALED = 1,
+    FILE_EXISTS = 2,
+    FILE_STREAM_ABNORMAL = 3,
+    FILE_DELETE_FAIL = 4,
+    FILE_RENAME_FAIL = 5,
+    FILE_OPEN_FAIL = 6，
+} LogErrorT_;
  
 class Rlog {
 public:
@@ -29,7 +44,7 @@ public:
      * \param  appenders      specify where to store log content
      * \param  logInfoSource  specify where the log information come from
      ***********************************************/
-    Rlog(const string &timeFormat, int appenders, int logInfoSource);
+    Rlog(const std::string &timeFormat, int appenders, int logInfoSource);
     
     /************************************************
      * \brief Copy constuctor
@@ -49,9 +64,9 @@ public:
      *        1.file
      *        2. ...
      * 
-     * \return true/false  log appenders open result
+     * \return log appenders open result
      ***********************************************/
-    bool RlogOpen();
+    LogErrorT_ RlogOpen();
     
     /************************************************
      * \brief It needs to close log appenders before record
@@ -59,7 +74,7 @@ public:
      *        1.file
      *        2. ...
      * 
-     * \return true/false  log appenders close result
+     * \return log appenders close result
      ***********************************************/
     bool RlogClose();
     
@@ -68,7 +83,7 @@ public:
      * 
      * \param resourceFilePath  path of resource file to set
      ***********************************************/
-    void SetResourceFilePath(const string &resourceFilePath) { 
+    void SetResourceFilePath(const std::string &resourceFilePath) { 
             m_resourceFilePath = resourceFilePath; }
             
     /************************************************
@@ -76,14 +91,14 @@ public:
      * 
      * \param return  path of resource file which has been set
      ***********************************************/
-     string GetResourceFilePath() const { return m_resourceFilePath; }
+     std::string GetResourceFilePath() const { return m_resourceFilePath; }
      
      /************************************************
      * \brief Set path of file to record log information
      * 
      * \param logFilePath  path of file to record log to set
      ***********************************************/
-    void SetLogFilePath(const string &logFilePath) { 
+    void SetLogFilePath(const std::string &logFilePath) { 
             m_logFilePath = logFilePath; }
             
     /************************************************
@@ -91,7 +106,7 @@ public:
      * 
      * \param return  path of file to record log information
      ***********************************************/
-     string GetLogFilePath() const { return m_logFilePath; }
+     std::string GetLogFilePath() const { return m_logFilePath; }
      
      /************************************************
      * \brief Write debug log
@@ -105,11 +120,17 @@ public:
      * 
      * \param logInfo  log information
      ***********************************************/
-     void RlogDebug(const string &logInfo);
+     void RlogDebug(const std::string &logInfo);
 private:
-    string m_timeFormat;        //format of datetime
-    string m_resourceFilePath;  //path of resource file
-    string m_logFilePath;       //path of file to record log information
+    std::string m_timeFormat;        //format of datetime
+    std::string m_resourceFilePath;  //path of resource file
+    std::string m_logFilePath;       //path of file to record log information
+    int m_appenders;                 //where to store log information
+    int m_logInfoSource;             //specify where the log information come from
+    
+    Directory *dirObj;
+    File *fileObj;
+    FileInfo *fileInfoObj;
 };
 }
  

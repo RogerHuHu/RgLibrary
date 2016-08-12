@@ -16,7 +16,7 @@
 namespace file {
 
 typedef enum FileErrorType {
-    OK = 0,
+    FILE_OK = 0,
     FILE_NAME_EMPTY = 1,
     FILE_EXISTS = 2,
     FILE_STREAM_ABNORMAL = 3,
@@ -48,6 +48,16 @@ public:
      * 
      * \param fileName  name of file to deal with
      * \param mode      file open mode
+     *        std::ios_base::in      open a file in readonly mode, create first 
+     *                               when the file is not exsits
+     *        std::ios_base::out     open a file in writeonly mode, create first 
+     *                               when the file is not exsits, else clear it's
+     *                               content
+     *        std::ios_base::ate     open a file and move the pointer to the end of this file
+     *        std::ios_base::app     open a file in append mode, create first 
+     *                               when the file is not exsits
+     *        std::ios_base::trunc   if the file to open exsits,delete it first
+     *        std::ios_base::binary  open a file in binary mode
      ***********************************************/
     File(const std::string &fileName, std::ios_base::openmode mode);
 
@@ -111,6 +121,13 @@ public:
      ***********************************************/
     FileErrorT_ CreateFile(const std::string &fileName);
 
+    /************************************************
+     * \brief Open file 
+     *
+     * \return open resut
+     ***********************************************/
+    FileErrorT_ OpenFile();
+    
     /************************************************
      * \brief Open file 
      *

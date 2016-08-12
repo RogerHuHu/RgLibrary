@@ -14,7 +14,7 @@
 namespace file {
     
 typedef enum DirErrorType {
-    OK = 0,
+    DIR_OK = 0,
     DIR_NAME_EMPTY = 1,
     DIR_EXISTS = 2,
     DIR_DELETE_FAIL = 3,

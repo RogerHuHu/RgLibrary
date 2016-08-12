@@ -61,8 +61,10 @@ bool File::FileOccupied() {
  * Check whether a file is occupied 
  */
 bool File::FileOccupied(const std::string &fileName) {
-    if(OpenFile(fileName) != OK) 
-        return true;
+    bool result = false;
+    if(OpenFile(fileName, std::ios_base::out) != OK) 
+        result = true;
+    return result;
 }
 
 /*
@@ -86,6 +88,13 @@ FileErrorT_ File::CreateFile(const std::string &fileName) {
 /*
  * Open file
  */
+FileErrorT_ File::OpenFile() {
+    return OpenFile(m_fileName, m_openmode);
+}
+
+/*
+ * Open file
+ */
 FileErrorT_ File::OpenFile(std::ios_base::openmode mode) {
     return OpenFile(m_fileName, mode);
 }
@@ -97,7 +106,7 @@ FileErrorT_ File::OpenFile(const std::string &fileName, std::ios_base::openmode 
     if(fileName.empty()) return FILE_NAME_EMPTY;
     m_fs.open(fileName, mode);
     if(m_fs) 
-        return OK;
+        return FILE_OK;
     else
         return FILE_OPEN_FAIL;
 }
@@ -117,7 +126,7 @@ FileErrorT_ File::Read(int *out) {
         m_fs >> *out;
     else
         return FILE_STREAM_ABNORMAL;
-    return OK;
+    return FILE_OK;
 }
 
 /*
@@ -128,7 +137,7 @@ FileErrorT_ File::Read(long *out) {
         m_fs >> *out;
     else
         return FILE_STREAM_ABNORMAL;
-    return OK;
+    return FILE_OK;
 }
 
 /*
@@ -142,7 +151,7 @@ FileErrorT_ File::Read(std::string &out) {
     } else {
         return FILE_STREAM_ABNORMAL;
     }
-    return OK;
+    return FILE_OK;
 }
 
 /*
@@ -153,7 +162,7 @@ FileErrorT_ File::Write(int in) {
         m_fs << in;
     else
         return FILE_STREAM_ABNORMAL;
-    return OK;
+    return FILE_OK;
 }
 
 /*
@@ -164,7 +173,7 @@ FileErrorT_ File::Write(long in) {
         m_fs << in;
     else
         return FILE_STREAM_ABNORMAL;
-    return OK;
+    return FILE_OK;
 }
 
 /*
@@ -175,7 +184,7 @@ FileErrorT_ File::Write(const std::string &in) {
         m_fs << in;
     else
         return FILE_STREAM_ABNORMAL;
-    return OK;
+    return FILE_OK;
 }
 
 /*
@@ -189,7 +198,7 @@ FileErrorT_ File::Delete() {
  * Delete file 
  */
 FileErrorT_ File::Delete(const std::string &fileName) {
-    if(remove(fileName.c_str()) == 0) return OK;
+    if(remove(fileName.c_str()) == 0) return FILE_OK;
     return FILE_DELETE_FAIL;
 }
 
@@ -205,7 +214,7 @@ FileErrorT_ File::Rename(const std::string &newName) {
  */
 FileErrorT_ File::Rename(const std::string &oldName, const std::string &newName) {
     if(rename(oldName.c_str(), newName.c_str()) == 0) {
-        return OK;
+        return FILE_OK;
     } else {
         return FILE_RENAME_FAIL;
     }
@@ -223,9 +232,9 @@ FileErrorT_ File::Copy(const std::string &dstFileName) {
  */
 FileErrorT_ File::Copy(File *dstFile) {
     FileErrorT_ errCode = OpenFile();
-    if(errCode != OK) return errCode;
+    if(errCode != FILE_OK) return errCode;
     errCode = dstFile->OpenFile();
-    if(errCode != OK) return errCode;
+    if(errCode != FILE_OK) return errCode;
     
     //Check whether source and destination file stream is good
     if(!m_fs.good() || !dstFile->m_fs.good()) {
@@ -237,7 +246,7 @@ FileErrorT_ File::Copy(File *dstFile) {
     dstFile->m_fs << m_fs.rdbuf();
     CloseFile();
     dstFile->CloseFile();
-    return OK;
+    return FILE_OK;
 }
 
 /*

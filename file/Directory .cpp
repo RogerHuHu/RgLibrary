@@ -69,6 +69,7 @@ DirErrorT_ File::CreateDirectory(const std::string &dirName) {
                 mkdir(tempPath.c_str());
         }
     }
+    return DIR_OK;
 }
 
 }
