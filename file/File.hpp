@@ -104,6 +104,13 @@ public:
      * \return file occupied or not
      ***********************************************/
     bool FileOccupied(const std::string &fileName);
+    
+    /************************************************
+     * \brief Get file open status
+     *
+     * \return file opened or not
+     ***********************************************/
+    bool IsOpened() const { return m_isOpened; }
 
     /************************************************
      * \brief Create an empty file 
@@ -291,6 +298,7 @@ private:
     std::fstream m_fs;
     std::string m_fileName;
     std::ios_base m_openmode;
+    bool m_isOpened;
 };
 }
 

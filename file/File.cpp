@@ -12,14 +12,15 @@ namespace file {
 /*
  * Construstor
  */
-File::File(const std::string &fileName) : m_fileName(fileName) {
+File::File(const std::string &fileName) : 
+            m_fileName(fileName), m_isOpened(false) {
 }
 
 /*
  * Construstor
  */
 File::File(const std::string &fileName, std::ios_base::openmode mode) :
-            m_fileName(fileName), m_openmode(mode) {    }
+            m_fileName(fileName), m_openmode(mode), m_isOpened(false) {    }
             
 /*
  * Copy constructor
@@ -28,6 +29,7 @@ File::File(const File &copy) {
     m_fs = copy.m_fs;
     m_fileName = copy.m_fileName;
     m_openmode = copy.m_openmode;
+    m_isOpened = copy.m_isOpened;
 }
 
 /*
@@ -105,10 +107,13 @@ FileErrorT_ File::OpenFile(std::ios_base::openmode mode) {
 FileErrorT_ File::OpenFile(const std::string &fileName, std::ios_base::openmode mode) {
     if(fileName.empty()) return FILE_NAME_EMPTY;
     m_fs.open(fileName, mode);
-    if(m_fs) 
+    if(m_fs) {
+        m_isOpened = true;
         return FILE_OK;
-    else
+    } else {
+        m_isOpened = false;
         return FILE_OPEN_FAIL;
+    }
 }
 
 /*

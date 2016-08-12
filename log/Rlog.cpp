@@ -46,14 +46,44 @@ Rlog::~Rlog() {
  * 2. ...
  */
 LogErrorT_ Rlog::RlogOpen() {
-    if(m_appenders == TERMINAL) {
-    } else if(m_appenders == FILE) {
-        fileObj = new File(m_logFilePath, std::ios_base::app);
-        if(fileObj->OpenFile() != FILE_OK) {
-            delete fileObj;
-            return LOG_FILE_OPEN_FIALED;
+    LogErrorT_ result = LOG_OK;
+    switch(m_appenders) {
+        case TERMINAL:
+        break;
+        case FILE: {
+            fileObj = new File(m_logFilePath, std::ios_base::app);
+            if(fileObj->OpenFile() != FILE_OK) {
+                delete fileObj;
+                fileObj = NULL;
+                result = LOG_FILE_OPEN_FIALED;
+            }
+            result = LOG_OK;
         }
-        return LOG_OK;
+        break;
+        default:
+        break;
+    }
+    return result;
+}
+
+/*
+ * It needs to close log appenders before record
+ * stopped when the appender is file
+ * 1.file
+ * 2. ...
+ */
+LogErrorT_ Rlog::RlogClose() {
+    LogErrorT_ result = LOG_OK;
+    switch(m_appenders) {
+        case TERMINAL:
+        break;
+        case FILE: {
+            fileObj->CloseFile();
+            result = LOG_OK;
+        }
+        break;
+        default:
+        break;
     }
 }
 

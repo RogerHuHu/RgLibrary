@@ -76,7 +76,7 @@ public:
      * 
      * \return log appenders close result
      ***********************************************/
-    bool RlogClose();
+    LogErrorT_ RlogClose();
     
     /************************************************
      * \brief Set resource file path
