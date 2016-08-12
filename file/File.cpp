@@ -1,5 +1,5 @@
 /************************************************
- * @file File.h
+ * @file File.cpp
  * \brief 
  * @author Roger
  * @version V1.0.0
@@ -47,7 +47,22 @@ bool File::FileExists() {
  * Check whether a file is exists 
  */
 bool File::FileExists(const std::string &fileName) {
-    return (access(fileName.c_str(), 0) == 0); 
+    return (access(fileName.c_str(), F_OK) == 0); 
+}
+
+/*
+ * Check whether a file is occupied
+ */
+bool File::FileOccupied() {
+    return FileOccupied(m_fileName);
+}
+
+/*
+ * Check whether a file is occupied 
+ */
+bool File::FileOccupied(const std::string &fileName) {
+    if(OpenFile(fileName) != OK) 
+        return true;
 }
 
 /*
@@ -220,6 +235,23 @@ FileErrorT_ File::Copy(File *dstFile) {
     }
 
     dstFile->m_fs << m_fs.rdbuf();
+    CloseFile();
+    dstFile->CloseFile();
     return OK;
 }
+
+/*
+ * Move file 
+ */
+FileErrorT_ File::Move(const std::string &dstFileName) {
+    
+}
+
+/*
+ * Move file 
+ */
+FileErrorT_ File::Move(File *dstFile) {
+    
+}
+
 }

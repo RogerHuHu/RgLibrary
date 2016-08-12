@@ -23,7 +23,7 @@ typedef enum FileErrorType {
     FILE_DELETE_FAIL = 4,
     FILE_RENAME_FAIL = 5,
     FILE_OPEN_FAIL = 6，
-} FileErrorT_
+} FileErrorT_;
 
 /***************************************
  * \brief File operations
@@ -31,6 +31,11 @@ typedef enum FileErrorType {
     
 class File {
 public:
+    /************************************************
+     * \brief Default Constructor
+     ***********************************************/
+    File() {}
+    
     /************************************************
      * \brief Constructor
      * 
@@ -73,6 +78,22 @@ public:
      * \return file exists or not
      ***********************************************/
     bool FileExists(const std::string &fileName);
+    
+    /************************************************
+     * \brief Check whether a file is occupied
+     *
+     * \return file occupied or not
+     ***********************************************/
+    bool FileOccupied();
+
+    /************************************************
+     * \brief Check whether a file is occupied
+     *
+     * \param fileName  name of file
+     *
+     * \return file occupied or not
+     ***********************************************/
+    bool FileOccupied(const std::string &fileName);
 
     /************************************************
      * \brief Create an empty file 
@@ -231,6 +252,24 @@ public:
      * \return copy resut
      ***********************************************/
      FileErrorT_ Copy(File *dstFile);
+     
+     /************************************************
+     * \brief Move file 
+     *
+     * \param dstFileName  name of file to move to
+     *
+     * \return move resut
+     ***********************************************/
+     FileErrorT_ Move(const std::string &dstFileName);
+     
+     /************************************************
+     * \brief Move file 
+     *
+     * \param dstFileName  name of file to move to
+     *
+     * \return copy resut
+     ***********************************************/
+     FileErrorT_ Move(File *dstFile);
 private:
     std::fstream m_fs;
     std::string m_fileName;
