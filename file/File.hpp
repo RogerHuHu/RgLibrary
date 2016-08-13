@@ -213,6 +213,33 @@ public:
      ***********************************************/
      FileErrorT_ Write(const std::string &in);
      
+     /************************************************
+     * \brief Write int to file, one line per write
+     *
+     * \param int  data to write
+     *
+     * \return write resut
+     ***********************************************/
+     FileErrorT_ WriteLine(int in);
+     
+    /************************************************
+     * \brief Write long to file, one line per write
+     *
+     * \param int  data to write
+     *
+     * \return write resut
+     ***********************************************/
+     FileErrorT_ WriteLine(long in);
+     
+    /************************************************
+     * \brief Write string to file, one line per write
+     *
+     * \param int  data to write
+     *
+     * \return write resut
+     ***********************************************/
+     FileErrorT_ WriteLine(const std::string &in);
+     
     /************************************************
      * \brief Delete file 
      *

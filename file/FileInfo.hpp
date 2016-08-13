@@ -7,7 +7,7 @@
  ***********************************************/
  
 #ifndef _FILE_INFO_H_
-#define _FILE_INF_H_
+#define _FILE_INFO_H_
 
 #include <sys/stat.h>
 #include <string>
@@ -28,6 +28,11 @@ typedef enum FileInfoErrorType {
 class FileInfo {
 public:
     /************************************************
+     * \brief Default constructor
+     ***********************************************/
+    FileInfo() {}
+    
+    /************************************************
      * \brief Constructor
      * 
      * \param fileName  name of file to deal with 
@@ -45,6 +50,18 @@ public:
      * \brief Destructor
      ***********************************************/
     ~FileInfo();
+    
+    /************************************************
+     * \brief Update file information
+     ***********************************************/
+    void Update();
+    
+    /************************************************
+     * \brief Update file information
+     * 
+     * \param fileName  name of file to deal with 
+     ***********************************************/
+    void Update(const std::string &fileName);
     
     /************************************************
      * \brief Get file mode

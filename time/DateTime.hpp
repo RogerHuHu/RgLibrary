@@ -153,18 +153,24 @@ class DateTime {
     
     /************************************************
      * \brief Get current UTC time
+     * 
+     * \return current UTC time struct
      *************************************************/
     std::tm GetCurrentUTCTime();
 
     /************************************************
      * \brief Get current UTC time
      *
-     * \param format  
+     * \param format  time format
+     * 
+     * \return current UTC time string
      *************************************************/
     string GetCurrentUTCTime(const char *format);
     
     /************************************************
      * \brief Get current local time
+     * 
+     * \return current local time struct
      *************************************************/
     std::tm GetCurrentLocalTime();
 
@@ -172,6 +178,8 @@ class DateTime {
      * \brief Get current local time
      *
      * \param format
+     * 
+     * \return current local time string
      *************************************************/
     std::tm GetCurrentLocalTime(const char *format);
 
@@ -179,6 +187,8 @@ class DateTime {
      * \brief Convert from std::tm to string
      *
      * \param format
+     * 
+     * \return 
      *************************************************/
     string ToString(const char *format)
 
@@ -194,6 +204,8 @@ class DateTime {
      * \brief To caculate a year value is leapyear or not
      * 
      * \param year  the year value
+     * 
+     * \return the year is leapyear or not
      ***********************************************/
     bool IsLeapYear(int year);
 private:

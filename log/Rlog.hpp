@@ -10,11 +10,15 @@
 #define _R_LOG_H_
  
 #include <iostream>
+#include <string>
 
 using namespace file;
+using namespace time;
+
 class Directory;
 class File;
 class FileInfo;
+class DateTime;
  
 namespace log {
 /***************************************
@@ -40,11 +44,14 @@ public:
     /************************************************
      * \brief  Constructor
      * 
-     * \param  timeFormat     format of datetime in log content
-     * \param  appenders      specify where to store log content
-     * \param  logInfoSource  specify where the log information come from
+     * \param timeFormat     format of datetime in log content
+     * \param appenders      specify where to store log content
+     * \param logInfoSource  specify where the log information come from
+     * \param maxBackupNum   max backup file number of rolling file
+     * \param maxFileSize    max file size of log file
      ***********************************************/
-    Rlog(const std::string &timeFormat, int appenders, int logInfoSource);
+    Rlog(const std::string &timeFormat, int appenders, int logInfoSource,
+         int maxBackupNum = 0, size_t maxFileSize = 10 * 1024 * 1024);
     
     /************************************************
      * \brief Copy constuctor
@@ -79,58 +86,122 @@ public:
     LogErrorT_ RlogClose();
     
     /************************************************
-     * \brief Set resource file path
+     * \brief Set resource file name
      * 
-     * \param resourceFilePath  path of resource file to set
+     * \param resourceFileName  name of resource file to set
      ***********************************************/
-    void SetResourceFilePath(const std::string &resourceFilePath) { 
-            m_resourceFilePath = resourceFilePath; }
+    void SetResourceFilePath(const std::string &resourceFileName) { 
+            m_resourceFileName = resourceFileName; }
             
     /************************************************
-     * \brief Get resource file path
+     * \brief Get resource file name
      * 
-     * \param return  path of resource file which has been set
+     * \param return  name of resource file which has been set
      ***********************************************/
-     std::string GetResourceFilePath() const { return m_resourceFilePath; }
+     std::string GetResourceFileName() const { return m_resourceFileName; }
      
      /************************************************
-     * \brief Set path of file to record log information
+     * \brief Set name of file to record log information
      * 
-     * \param logFilePath  path of file to record log to set
+     * \param logFileName  name of file to record log to set
      ***********************************************/
-    void SetLogFilePath(const std::string &logFilePath) { 
-            m_logFilePath = logFilePath; }
+    void SetLogFileName(const std::string &logFileName) { 
+            m_logFileName = logFileName; }
             
     /************************************************
-     * \brief Get path of file to record log information
+     * \brief Get name of file to record log information
      * 
-     * \param return  path of file to record log information
+     * \param return  name of file to record log information
      ***********************************************/
-     std::string GetLogFilePath() const { return m_logFilePath; }
+     std::string GetLogFileName() const { return m_logFileName; }
      
-     /************************************************
+    /************************************************
      * \brief Write debug log
      * 
      * \param logInfoCode  code of log information
      ***********************************************/
      void RlogDebug(int logInfoCode);
      
-     /************************************************
+    /************************************************
      * \brief Write debug log
      * 
      * \param logInfo  log information
      ***********************************************/
      void RlogDebug(const std::string &logInfo);
+     
+     /************************************************
+     * \brief Write info log
+     * 
+     * \param logInfoCode  code of log information
+     ***********************************************/
+     void RlogInfo(int logInfoCode);
+     
+    /************************************************
+     * \brief Write info log
+     * 
+     * \param logInfo  log information
+     ***********************************************/
+     void RlogInfo(const std::string &logInfo);
+     
+     /************************************************
+     * \brief Write warn log
+     * 
+     * \param logInfoCode  code of log information
+     ***********************************************/
+     void RlogWarn(int logInfoCode);
+     
+    /************************************************
+     * \brief Write warn log
+     * 
+     * \param logInfo  log information
+     ***********************************************/
+     void RlogWarn(const std::string &logInfo);
+     
+     /************************************************
+     * \brief Write error log
+     * 
+     * \param logInfoCode  code of log information
+     ***********************************************/
+     void RlogError(int logInfoCode);
+     
+    /************************************************
+     * \brief Write error log
+     * 
+     * \param logInfo  log information
+     ***********************************************/
+     void RlogError(const std::string &logInfo);
+     
+     /************************************************
+     * \brief Write fatal log
+     * 
+     * \param logInfoCode  code of log information
+     ***********************************************/
+     void RlogFatal(int logInfoCode);
+     
+    /************************************************
+     * \brief Write fatal log
+     * 
+     * \param logInfo  log information
+     ***********************************************/
+     void RlogFatal(const std::string &logInfo);
+     
+     /************************************************
+     * \brief Rollover log files
+     ***********************************************/
+     void RollOverFiles();
 private:
     std::string m_timeFormat;        //format of datetime
-    std::string m_resourceFilePath;  //path of resource file
-    std::string m_logFilePath;       //path of file to record log information
+    std::string m_resourceFileName;  //name of resource file
+    std::string m_logFileName;       //name of file to record log information
     int m_appenders;                 //where to store log information
     int m_logInfoSource;             //specify where the log information come from
+    int m_maxBackupNum;              //max backup file number of rolling file
+    size_t m_maxFileSize;            //max file size of log file
     
     Directory *dirObj;
     File *fileObj;
     FileInfo *fileInfoObj;
+    DateTime *dateTimeObj;
 };
 }
  

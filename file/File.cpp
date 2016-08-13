@@ -193,6 +193,39 @@ FileErrorT_ File::Write(const std::string &in) {
 }
 
 /*
+ * Write int to file, one line per write
+ */
+FileErrorT_ File::Write(int in) {
+    if(m_fs.good())
+        m_fs << in << std::endl;
+    else
+        return FILE_STREAM_ABNORMAL;
+    return FILE_OK;
+}
+
+/*
+ * Write long to file, one line per write
+ */
+FileErrorT_ File::Write(long in) {
+    if(m_fs.good())
+        m_fs << in << std::endl;
+    else
+        return FILE_STREAM_ABNORMAL;
+    return FILE_OK;
+}
+
+/*
+ * Write string to file, one line per write
+ */
+FileErrorT_ File::Write(const std::string &in) {
+    if(m_fs.good())
+        m_fs << in << std::endl;
+    else
+        return FILE_STREAM_ABNORMAL;
+    return FILE_OK;
+}
+
+/*
  * Delete file 
  */
 FileErrorT_ File::Delete() {
