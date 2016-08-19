@@ -29,6 +29,15 @@ enum APPENDERS { TERMINAL = 0, FILE = 1 };
 enum LOG_INFO_SOURCE { CODE = 0, RESOURCE_FILE = 1 };
 enum LOG_LEVEL { DEBUG = 0, INFO = 1, WARN = 2, ERROE = 3, FATAL = 4 };
 
+const char *log_lvl_str[] = 
+{
+    " DEBUG ",
+    " INFO ",
+    " WARN ",
+    " ERROR ",
+    " FATAL "
+}
+
 typedef enum LogErrorType {
     LOG_OK = 0,
     LOG_FILE_OPEN_FIALED = 1,
@@ -116,74 +125,20 @@ public:
      std::string GetLogFileName() const { return m_logFileName; }
      
     /************************************************
-     * \brief Write debug log
+     * \brief Write log
      * 
      * \param logInfoCode  code of log information
+     * \param level        log level
      ***********************************************/
-     void RlogDebug(int logInfoCode);
+     void RlogWrite(int logInfoCode, LOG_LEVEL level);
      
     /************************************************
-     * \brief Write debug log
+     * \brief Write log
      * 
      * \param logInfo  log information
+     * \param level    log level
      ***********************************************/
-     void RlogDebug(const std::string &logInfo);
-     
-     /************************************************
-     * \brief Write info log
-     * 
-     * \param logInfoCode  code of log information
-     ***********************************************/
-     void RlogInfo(int logInfoCode);
-     
-    /************************************************
-     * \brief Write info log
-     * 
-     * \param logInfo  log information
-     ***********************************************/
-     void RlogInfo(const std::string &logInfo);
-     
-     /************************************************
-     * \brief Write warn log
-     * 
-     * \param logInfoCode  code of log information
-     ***********************************************/
-     void RlogWarn(int logInfoCode);
-     
-    /************************************************
-     * \brief Write warn log
-     * 
-     * \param logInfo  log information
-     ***********************************************/
-     void RlogWarn(const std::string &logInfo);
-     
-     /************************************************
-     * \brief Write error log
-     * 
-     * \param logInfoCode  code of log information
-     ***********************************************/
-     void RlogError(int logInfoCode);
-     
-    /************************************************
-     * \brief Write error log
-     * 
-     * \param logInfo  log information
-     ***********************************************/
-     void RlogError(const std::string &logInfo);
-     
-     /************************************************
-     * \brief Write fatal log
-     * 
-     * \param logInfoCode  code of log information
-     ***********************************************/
-     void RlogFatal(int logInfoCode);
-     
-    /************************************************
-     * \brief Write fatal log
-     * 
-     * \param logInfo  log information
-     ***********************************************/
-     void RlogFatal(const std::string &logInfo);
+     void RlogWrite(const std::string &logInfo, LOG_LEVEL level);
      
      /************************************************
      * \brief Rollover log files

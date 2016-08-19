@@ -106,19 +106,19 @@ LogErrorT_ Rlog::RlogClose() {
 }
 
 /*
- * Write debug log
+ * Write log
  */
-void Rlog::RlogDebug(int logInfoCode) {
+void Rlog::RlogWrite(int logInfoCode, LOG_LEVEL level) {
 }
 
 /*
- * Write debug log
+ * Write log
  */
-void Rlog::RlogDebug(const std::string &logInfo) {
+void Rlog::RlogWrite(const std::string &logInfo, LOG_LEVEL level) {
     switch(m_appenders) {
         case TERMINAL : {
             std::cout << dateTimeObj->GetCurrentLocalTime() << 
-            " DEBUG " << 
+            log_lvl_str[level] << 
             logInfo << 
             std::endl;
         }
@@ -131,123 +131,7 @@ void Rlog::RlogDebug(const std::string &logInfo) {
                 fileObj->OpenFile(std::ios_base::trunc | std::ios_base::app);
             }
             fileObj->WriteLen(dateTimeObj->GetCurrentLocalTime() + 
-                           " DEBUG " +
-                           logInfo);
-        }
-        break;
-        default : 
-        break;
-    }
-}
-
-/*
- * Write info log
- */
-void Rlog::RlogInfo(int logInfoCode) {
-}
-
-/*
- * Write info log
- */
-void Rlog::RlogInfo(const std::string &logInfo) {
-    switch(m_appenders) {
-        case TERMINAL : {
-            std::cout << dateTimeObj->GetCurrentLocalTime() << 
-            " INFO " << 
-            logInfo << 
-            std::endl;
-        }
-        break;
-        case FILE : {
-            fileObj->WriteLen(dateTimeObj->GetCurrentLocalTime() + 
-                           " INFO " +
-                           logInfo);
-        }
-        break;
-        default : 
-        break;
-    }
-}
-
-/*
- * Write warn log
- */
-void Rlog::RlogWarn(int logInfoCode) {
-}
-
-/*
- * Write warn log
- */
-void Rlog::RlogWarn(const std::string &logInfo) {
-    switch(m_appenders) {
-        case TERMINAL : {
-            std::cout << dateTimeObj->GetCurrentLocalTime() << 
-            " WARN " << 
-            logInfo << 
-            std::endl;
-        }
-        break;
-        case FILE : {
-            fileObj->WriteLen(dateTimeObj->GetCurrentLocalTime() + 
-                           " WARN " +
-                           logInfo);
-        }
-        break;
-        default : 
-        break;
-    }
-}
-
-/*
- * Write error log
- */
-void Rlog::RlogError(int logInfoCode) {
-}
-
-/*
- * Write error log
- */
-void Rlog::RlogError(const std::string &logInfo) {
-    switch(m_appenders) {
-        case TERMINAL : {
-            std::cout << dateTimeObj->GetCurrentLocalTime() << 
-            " ERROR " << 
-            logInfo << 
-            std::endl;
-        }
-        break;
-        case FILE : {
-            fileObj->WriteLen(dateTimeObj->GetCurrentLocalTime() + 
-                           " ERROR " +
-                           logInfo);
-        }
-        break;
-        default : 
-        break;
-    }
-}
-
-/*
- * Write fatal log
- */
-void Rlog::RlogFatal(int logInfoCode) {
-}
-
-/*
- * Write fatal log
- */
-void Rlog::RlogFatal(const std::string &logInfo) {
-    switch(m_appenders) {
-        case TERMINAL : {
-            std::cout << dateTimeObj->GetCurrentLocalTime() << 
-            " FATAL " << 
-            logInfo << 
-            std::endl;
-        }
-        break;
-        case FILE : {
-            fileObj->WriteLen(dateTimeObj->GetCurrentLocalTime() + 
-                           " FATAL " +
+                           log_lvl_str[level] +
                            logInfo);
         }
         break;
