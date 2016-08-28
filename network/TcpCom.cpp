@@ -23,9 +23,9 @@ TcpCom::TcpCom(unsigned short port, int type) : m_backlog(1) {
     }
 #endif
     if(m_socketFd == -1) {
-        if(type == SERVER)
+        if(type == TCP_SERVER)
             m_localSockFd = &m_sockConnect;
-        else if(type == CLIENT)
+        else if(type == TCP_CLIENT)
             m_localSockFd = &m_socketFd;
             
         m_socketFd = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);

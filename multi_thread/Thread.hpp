@@ -60,20 +60,21 @@ public:
     void Join();
 
     /************************************************
-     * \brief 线程上锁
+     * \brief Lock the thread
      *************************************************/
-    void Lock(pthread_mutex_t mutex);
+    void Lock();
 
     /************************************************
-     * \brief 线程解锁
+     * \brief Unlock the thread
      *************************************************/
-    void Unlock(pthread_mutex_t mutex);
+    void Unlock();
 protected:
     virtual void run() = 0;
 private:
-    pthread_t t_id; //线程ID
+    pthread_t t_id; //Id of the thread just created
     int threadStatus;
-    bool isRunning; //线程是否在运行
+    bool isRunning; //Weather the thread is running
+    pthread_mutex_t multiThreadMutex;
 
     /************************************************
      * \brief 线程运行函数

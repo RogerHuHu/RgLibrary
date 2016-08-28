@@ -14,8 +14,10 @@ void *thread_proxy_func(void *args) {
  * 启动线程
  */
 void Thread::Start() {
-    if(pthread_create(&t_id, NULL, thread_proxy_func, this) == 0)
+    if(pthread_create(&t_id, NULL, thread_proxy_func, this) == 0) {
         isRunning = true;
+        pthread_mutex_init(&multiThreadMutex, NULL);
+    }
 }
 
 /*
@@ -26,6 +28,7 @@ void Thread::Stop() {
         pthread_cancel(t_id);
         t_id = 0;
         isRunning = false;
+        pthread_mutex_destroy(&multiThreadMutex);
     }
 }
 
@@ -58,15 +61,15 @@ void Thread::Join() {
 /*
  * 线程锁
  */
-void Thread::Lock(pthread_mutex_t mutex) {
-    pthread_mutex_lock(&mutex);
+void Thread::Lock() {
+    pthread_mutex_lock(&multiThreadMutex);
 }
 
 /*
  * 线程解锁
  */
-void Unlock(pthread_mutex_t mutex) {
-    pthread_mutex_unlock(&mutex);
+void Unlock() {
+    pthread_mutex_unlock(&multiThreadMutex);
 }
 
 }

@@ -2,8 +2,7 @@
  * @file Rlog.hpp
  * \brief 
  * @author Roger
- * @version V1.1.0
- * @date 2016-07
+ * @date 2016-08
  ***********************************************/
  
 #ifndef _R_LOG_H_
@@ -25,18 +24,25 @@ namespace log {
  * \brief log module
  * *************************************/
  
-enum APPENDERS { TERMINAL = 0, FILE = 1 };
-enum LOG_INFO_SOURCE { CODE = 0, RESOURCE_FILE = 1 };
-enum LOG_LEVEL { DEBUG = 0, INFO = 1, WARN = 2, ERROE = 3, FATAL = 4 };
+typedef enum LogAppendersType { 
+    LOG_TERMINAL = 0, 
+    LOG_FILE = 1 
+} LogAppendersT_;
 
-const char *log_lvl_str[] = 
-{
-    " DEBUG ",
-    " INFO ",
-    " WARN ",
-    " ERROR ",
-    " FATAL "
-}
+typedef enum LogInfoSourceType { 
+    LOG_CODE = 0, 
+    LOG_RESOURCE_FILE = 1 
+} LogInfoSourceT_;
+
+typedef enum LogLevelType { 
+    LOG_DEBUG = 0,
+    LOG_INFO = 1, 
+    LOG_WARN = 2, 
+    LOG_ERROE = 3, 
+    LOG_FATAL = 4 
+}  LogLevelT_;
+
+extern const char *logLvlStr[5];
 
 typedef enum LogErrorType {
     LOG_OK = 0,
@@ -59,7 +65,7 @@ public:
      * \param maxBackupNum   max backup file number of rolling file
      * \param maxFileSize    max file size of log file
      ***********************************************/
-    Rlog(const std::string &timeFormat, int appenders, int logInfoSource,
+    Rlog(const std::string &timeFormat, LogAppendersT_ appenders, LogInfoSourceT_ logInfoSource,
          int maxBackupNum = 0, size_t maxFileSize = 10 * 1024 * 1024);
     
     /************************************************
@@ -91,7 +97,7 @@ public:
      *        2. ...
      * 
      * \return log appenders close result
-     ***********************************************/
+     ****0*******************************************/
     LogErrorT_ RlogClose();
     
     /************************************************
@@ -130,28 +136,29 @@ public:
      * \param logInfoCode  code of log information
      * \param level        log level
      ***********************************************/
-     void RlogWrite(int logInfoCode, LOG_LEVEL level);
+     void RlogWrite(LogInfoSourceT_ logInfoCode, LogLevelT_ level);
      
     /************************************************
      * \brief Write log
      * 
+     * \param logCode  code of log information
      * \param logInfo  log information
      * \param level    log level
      ***********************************************/
-     void RlogWrite(const std::string &logInfo, LOG_LEVEL level);
+     void RlogWrite(int logCode, const std::string &logInfo, LogLevelT_ level);
      
      /************************************************
      * \brief Rollover log files
      ***********************************************/
      void RollOverFiles();
 private:
-    std::string m_timeFormat;        //format of datetime
-    std::string m_resourceFileName;  //name of resource file
-    std::string m_logFileName;       //name of file to record log information
-    int m_appenders;                 //where to store log information
-    int m_logInfoSource;             //specify where the log information come from
-    int m_maxBackupNum;              //max backup file number of rolling file
-    size_t m_maxFileSize;            //max file size of log file
+    std::string m_timeFormat;         //format of datetime
+    std::string m_resourceFileName;   //name of resource file
+    std::string m_logFileName;        //name of file to record log information
+    LogAppendersT_ m_appenders;       //where to store log information
+    LogInfoSourceT_ m_logInfoSource;  //specify where the log information come from
+    int m_maxBackupNum;               //max backup file number of rolling file
+    size_t m_maxFileSize;             //max file size of log file
     
     Directory *dirObj;
     File *fileObj;

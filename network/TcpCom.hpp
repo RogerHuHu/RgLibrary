@@ -37,8 +37,8 @@ const int TCP_SEND_FAIL = -1;
 const int TCP_NONBLOCK = 0;
 const int TCP_BLOCK = 1;
 
-const int SERVER = 0;
-const int CLIENT = 1;
+const int TCP_SERVER = 0;
+const int TCP_CLIENT = 1;
 
 /***************************************
  * \brief TCP communication
