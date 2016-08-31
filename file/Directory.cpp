@@ -19,7 +19,7 @@ Directory::Directory(const std::string &dirName) : m_dirName(dirName) {
  * Copy constructor
  */
 Directory::Directory(const Directory &copy) {
-    m_dirName = copy.m_fileName;
+    m_dirName = copy.m_dirName;
 }
 
 /*
@@ -45,14 +45,14 @@ bool Directory::DirectoryExists(const std::string &dirName) {
 /*
  * Create an empty directory
  */
-DirErrorT_ File::CreateDirectory() {
+DirErrorT_ Directory::CreateDirectory() {
     return CreateDirectory(m_dirName);
 }
 
 /*
  * Create an empty directory
  */
-DirErrorT_ File::CreateDirectory(const std::string &dirName) {
+DirErrorT_ Directory::CreateDirectory(const std::string &dirName) {
     if(dirName.empty()) return DIR_NAME_EMPTY;
     if(DirectoryExists(dirName)) return DIR_EXISTS;
     std::string tempPath = "";
@@ -62,7 +62,7 @@ DirErrorT_ File::CreateDirectory(const std::string &dirName) {
             tempPath = dirName.substr(left, right);
             if(!DirectoryExists(tempPath))
                 mkdir(tempPath.c_str());
-        } else if(dirName.at(right) == '\') {
+        } else if(dirName.at(right) == '\\') {
             tempPath = dirName.substr(left, right);
             ++right;
             if(!DirectoryExists(tempPath))

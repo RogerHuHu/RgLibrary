@@ -10,14 +10,13 @@
  
 #include <iostream>
 #include <string>
+#include "File.hpp"
+#include "FileInfo.hpp"
+#include "Directory.hpp"
+#include "DateTime.hpp"
 
 using namespace file;
-using namespace time;
-
-class Directory;
-class File;
-class FileInfo;
-class DateTime;
+using namespace rtime;
  
 namespace log {
 /***************************************
@@ -51,7 +50,7 @@ typedef enum LogErrorType {
     FILE_STREAM_ABNORMAL = 3,
     FILE_DELETE_FAIL = 4,
     FILE_RENAME_FAIL = 5,
-    FILE_OPEN_FAIL = 6，
+    FILE_OPEN_FAIL = 6,
 } LogErrorT_;
  
 class Rlog {
@@ -66,7 +65,7 @@ public:
      * \param maxFileSize    max file size of log file
      ***********************************************/
     Rlog(const std::string &timeFormat, LogAppendersT_ appenders, LogInfoSourceT_ logInfoSource,
-         int maxBackupNum = 0, size_t maxFileSize = 10 * 1024 * 1024);
+         int maxBackupNum, size_t maxFileSize);
     
     /************************************************
      * \brief Copy constuctor

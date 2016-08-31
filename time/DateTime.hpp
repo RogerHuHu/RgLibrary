@@ -9,8 +9,9 @@
 #ifndef _DATE_TIME_H_
 #define _DATE_TIME_H_
 
-#if (defined _linux) || (defined _unix)
 #include <ctime>
+
+#if (defined _linux) || (defined _unix)
 #include <sys/time.h>
 #endif
 
@@ -21,7 +22,7 @@
 #include <string>
 #include <chrono>
 
-namespace time {
+namespace rtime {
 
 /***************************************
  * \brief Date time
@@ -34,7 +35,7 @@ class DateTime {
      * 
      * \param format  format of datetime
      ***********************************************/
-    DateTime(const string &format);
+    DateTime(const std::string &format);
     
     /************************************************
      * \brief Constructor
@@ -51,7 +52,7 @@ class DateTime {
     /************************************************
      * \brief Destructor
      ***********************************************/
-    ~DataTime() {}
+    ~DateTime() {}
     
     /************************************************
      * \brief Set year value
@@ -138,25 +139,25 @@ class DateTime {
     int GetSecond() const { return m_second; }
     
     /************************************************
-     * \brief Convert from std::tm to seconds from 1970-01-01
+     * \brief Convert from struct tm to seconds from 1970-01-01
      *
      * \return seconds from 1970-01-01
      *************************************************/
-    std::time_t ToSecondsFrom1970_1_1(std::tm tm_time);
+    time_t ToSecondsFrom1970_1_1(struct tm tm_time);
 
     /************************************************
      * \brief Get current seconds from 1970-01-01
      *
      * \return seconds from 1970-01-01
      *************************************************/
-    std::time_t GetSecondsFrom1970_1_1();
+    time_t GetSecondsFrom1970_1_1();
     
     /************************************************
      * \brief Get current UTC time
      * 
      * \return current UTC time struct
      *************************************************/
-    std::tm GetCurrentUTCTime();
+    struct tm GetCurrentUTCTime();
 
     /************************************************
      * \brief Get current UTC time
@@ -165,14 +166,14 @@ class DateTime {
      * 
      * \return current UTC time string
      *************************************************/
-    string GetCurrentUTCTime(const char *format);
+    std::string GetCurrentUTCTime(const char *format);
     
     /************************************************
      * \brief Get current local time
      * 
      * \return current local time struct
      *************************************************/
-    std::tm GetCurrentLocalTime();
+    struct tm GetCurrentLocalTime();
 
     /************************************************
      * \brief Get current local time
@@ -181,24 +182,25 @@ class DateTime {
      * 
      * \return current local time string
      *************************************************/
-    std::tm GetCurrentLocalTime(const char *format);
+    std::string GetCurrentLocalTime(const char *format);
 
     /************************************************
-     * \brief Convert from std::tm to string
+     * \brief Convert from ::tm to string
      *
-     * \param format
+     * \param format   time string format
+     * \param tm_time  time struct
      * 
      * \return 
      *************************************************/
-    string ToString(const char *format)
+    std::string ToString(const char *format, struct tm tm_time);
 
     /************************************************
-     * \brief Convert time format from std::tm to normal 
+     * \brief Convert time format from ::tm to normal 
      * year, month, day, hour, minute, second
      *
      * \param tm_time  
      *************************************************/
-    void ConvertFormat(std::tm tm_time);
+    void ConvertFormat(struct tm tm_time);
     
     /************************************************
      * \brief To caculate a year value is leapyear or not

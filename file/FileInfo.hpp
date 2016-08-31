@@ -16,11 +16,11 @@ namespace file {
     
 typedef enum FileInfoErrorType {
     OK = 0,
-    FILE_NAME_EMPTY = 1,
-    FILE_NOT_FOUND = 2,
-    INVALID_PARAMETER = 3,
-    UNEXPCETED_ERROR = 4,
-} FileInfoErrorT_
+    FI_FILE_NAME_EMPTY = 1,
+    FI_FILE_NOT_FOUND = 2,
+    FI_INVALID_PARAMETER = 3,
+    FI_UNEXPCETED_ERROR = 4,
+} FileInfoErrorT_;
 
 /***************************************
  * \brief File information
@@ -75,7 +75,7 @@ public:
      * 
      * \return size of the file
      ***********************************************/
-     unsigned long GetSize() const { return\m_size; }
+     unsigned long GetSize() const { return m_size; }
      
      /************************************************
      * \brief Get last access time of the file

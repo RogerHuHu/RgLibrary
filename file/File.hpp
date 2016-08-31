@@ -22,7 +22,7 @@ typedef enum FileErrorType {
     FILE_STREAM_ABNORMAL = 3,
     FILE_DELETE_FAIL = 4,
     FILE_RENAME_FAIL = 5,
-    FILE_OPEN_FAIL = 6，
+    FILE_OPEN_FAIL = 6
 } FileErrorT_;
 
 /***************************************
@@ -30,11 +30,11 @@ typedef enum FileErrorType {
  * *************************************/
     
 class File {
-public:
+public :
     /************************************************
      * \brief Default Constructor
      ***********************************************/
-    File() {}
+    File() : m_fileName(""), m_isOpened(false) {}
     
     /************************************************
      * \brief Constructor
@@ -324,7 +324,7 @@ public:
 private:
     std::fstream m_fs;
     std::string m_fileName;
-    std::ios_base m_openmode;
+    std::ios_base::openmode m_openMode;
     bool m_isOpened;
 };
 }

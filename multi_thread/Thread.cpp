@@ -68,7 +68,7 @@ void Thread::Lock() {
 /*
  * 线程解锁
  */
-void Unlock() {
+void Thread::Unlock() {
     pthread_mutex_unlock(&multiThreadMutex);
 }
 

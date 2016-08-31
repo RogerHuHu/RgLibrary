@@ -6,7 +6,6 @@
  ***********************************************/
  
 #include "SSHForward.hpp"
-#include "TcpCom.h"
 
 namespace forward {
 /*
@@ -49,6 +48,8 @@ SSHForward::SSHForward(unsigned short port, const string &logTimeFormat,
  */
 SSHForward::~SSHForward() {
     delete tcpServer;
+    log->RlogClose();
+    delete log;
 }
 
 /*
@@ -59,12 +60,14 @@ void SSHForward::Cancel() {
         m_cancel = true;
         Join();
         m_cancel = false;
+    }
 }
     
 /*
  * What execute in current thread
  */
-void SSHForward::Run() {
+void SSHForward::run() {
+    log->RlogWrite(0, "SSHForward Run", LOG_INFO);
     while(!m_cancel) {
         if(m_clientAddr == "") {
             m_clientAddr = tcpServer->Accept();
@@ -73,9 +76,8 @@ void SSHForward::Run() {
         } else {
             
         }
+        Sleep(100);
     }
-}
-
 }
 
 }

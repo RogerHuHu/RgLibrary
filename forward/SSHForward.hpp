@@ -8,13 +8,13 @@
 #ifndef _SSH_FORWARD_H_
 #define _SSH_FORWARD_H_
 
-#include "Thread.h"
+#include "Thread.hpp"
+#include "TcpCom.hpp"
+#include "Rlog.hpp"
 
 using namespace network;
 using namespace log;
-
-class TcpCom;
-class Rlog;
+using namespace multi_thread;
 
 namespace forward {
 
@@ -53,7 +53,7 @@ private :
    /************************************************
     * \brief What execute in current thread
     ***********************************************/
-    void Run();
+    void run();
      
     TcpCom *tcpServer;
     Rlog *log;
@@ -64,7 +64,7 @@ private :
      
     string m_logTimeFormat;
     int m_logMaxFileSize;
-    string m_logBackupNum;
+    int m_logBackupNum;
 };
 }
 

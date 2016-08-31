@@ -20,15 +20,15 @@ File::File(const std::string &fileName) :
  * Construstor
  */
 File::File(const std::string &fileName, std::ios_base::openmode mode) :
-            m_fileName(fileName), m_openmode(mode), m_isOpened(false) {    }
+            m_fileName(fileName), m_openMode(mode), m_isOpened(false) {    }
             
 /*
  * Copy constructor
  */
 File::File(const File &copy) {
-    m_fs = copy.m_fs;
+    //m_fs = copy.m_fs;
     m_fileName = copy.m_fileName;
-    m_openmode = copy.m_openmode;
+    //m_openMode = copy.m_openMode;
     m_isOpened = copy.m_isOpened;
 }
 
@@ -64,7 +64,7 @@ bool File::FileOccupied() {
  */
 bool File::FileOccupied(const std::string &fileName) {
     bool result = false;
-    if(OpenFile(fileName, std::ios_base::out) != OK) 
+    if(OpenFile(fileName, std::ios_base::out) != FILE_OK) 
         result = true;
     return result;
 }
@@ -91,7 +91,7 @@ FileErrorT_ File::CreateFile(const std::string &fileName) {
  * Open file
  */
 FileErrorT_ File::OpenFile() {
-    return OpenFile(m_fileName, m_openmode);
+    return OpenFile(m_fileName, m_openMode);
 }
 
 /*
@@ -106,7 +106,7 @@ FileErrorT_ File::OpenFile(std::ios_base::openmode mode) {
  */
 FileErrorT_ File::OpenFile(const std::string &fileName, std::ios_base::openmode mode) {
     if(fileName.empty()) return FILE_NAME_EMPTY;
-    m_fs.open(fileName, mode);
+    m_fs.open(fileName.c_str(), mode);
     if(m_fs) {
         m_isOpened = true;
         return FILE_OK;
@@ -150,7 +150,7 @@ FileErrorT_ File::Read(long *out) {
  */
 FileErrorT_ File::Read(std::string &out) {
     if(m_fs.good()) {
-        string temp;
+        std::string temp;
         while(getline(m_fs, temp))
             out += temp;
     } else {
@@ -195,7 +195,7 @@ FileErrorT_ File::Write(const std::string &in) {
 /*
  * Write int to file, one line per write
  */
-FileErrorT_ File::Write(int in) {
+FileErrorT_ File::WriteLine(int in) {
     if(m_fs.good())
         m_fs << in << std::endl;
     else
@@ -206,7 +206,7 @@ FileErrorT_ File::Write(int in) {
 /*
  * Write long to file, one line per write
  */
-FileErrorT_ File::Write(long in) {
+FileErrorT_ File::WriteLine(long in) {
     if(m_fs.good())
         m_fs << in << std::endl;
     else
@@ -217,7 +217,7 @@ FileErrorT_ File::Write(long in) {
 /*
  * Write string to file, one line per write
  */
-FileErrorT_ File::Write(const std::string &in) {
+FileErrorT_ File::WriteLine(const std::string &in) {
     if(m_fs.good())
         m_fs << in << std::endl;
     else
@@ -291,14 +291,14 @@ FileErrorT_ File::Copy(File *dstFile) {
  * Move file 
  */
 FileErrorT_ File::Move(const std::string &dstFileName) {
-    
+    return FILE_OK;
 }
 
 /*
  * Move file 
  */
 FileErrorT_ File::Move(File *dstFile) {
-    
+    return FILE_OK;
 }
 
 }

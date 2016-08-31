@@ -10,6 +10,7 @@
 #define _DIRECTORY_H_
 
 #include <string>
+#include <io.h>
 
 namespace file {
     

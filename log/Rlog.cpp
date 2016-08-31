@@ -8,9 +8,6 @@
 
 #include <sstream>
 #include "Rlog.hpp"
-#include "Directory.hpp"
-#include "File.hpp"
-#include "FileInfo.hpp"
 
 namespace log {
 
@@ -21,7 +18,7 @@ const char *logLvlStr[] =
     " WARN ",
     " ERROR ",
     " FATAL "
-}
+};
 
 /*
  * Construstor
@@ -42,8 +39,8 @@ Rlog::Rlog(const std::string &timeFormat, LogAppendersT_ appenders,
  */
 Rlog::Rlog(const Rlog &copy) {
     m_timeFormat = copy.m_timeFormat;
-    m_resourceFilePath = copy.m_resourceFilePath;
-    m_logFilePath = copy.m_logFilePath;
+    m_resourceFileName = copy.m_resourceFileName;
+    m_logFileName = copy.m_logFileName;
     m_appenders = copy.m_appenders;
     m_logInfoSource = copy.m_logInfoSource;
 }
@@ -128,7 +125,7 @@ void Rlog::RlogWrite(LogInfoSourceT_ logInfoCode, LogLevelT_ level) {
 void Rlog::RlogWrite(int logCode, const std::string &logInfo, LogLevelT_ level) {
     switch(m_appenders) {
         case LOG_TERMINAL : {
-            std::cout << dateTimeObj->GetCurrentLocalTime() << 
+            std::cout << dateTimeObj->GetCurrentLocalTime(m_timeFormat.c_str()) << 
             " " << 
             logLvlStr[level] << 
             logCode <<
@@ -145,12 +142,12 @@ void Rlog::RlogWrite(int logCode, const std::string &logInfo, LogLevelT_ level) 
                     fileObj->OpenFile(std::ios_base::trunc | std::ios_base::app);
                 }
                 std::stringstream stream;
-                stream << dateTimeObj->GetCurrentLocalTime() << 
+                stream << dateTimeObj->GetCurrentLocalTime(m_timeFormat.c_str()) << 
                           " " <<
                           logLvlStr[level] <<
                           logCode <<
-                          logInfo << endl;
-                fileObj->WriteLen(stream.str());
+                          logInfo << std::endl;
+                fileObj->WriteLine(stream.str());
             }
         }
         break;

@@ -7,15 +7,16 @@
  ***********************************************/
  
 #include <iostream>
+#include <string.h>
 #include "DateTime.hpp"
 
-using namespace std::chrono::system_clock;
+using namespace std::chrono;
 
-namespace time {
+namespace rtime {
 /*
  * Constructor
  */ 
-DateTime::DateTime(const string &format) : m_format(format), 
+DateTime::DateTime(const std::string &format) : m_format(format), 
                                            m_year(0),
                                            m_month(0),
                                            m_day(0),
@@ -44,10 +45,10 @@ DateTime::DateTime(int year, int month, int day,
 }
 
 /*
- * Convert from std::tm to seconds from 1970-01-01
+ * Convert from struct tm to seconds from 1970-01-01
  */ 
-std::time_t DateTime::ToSecondsFrom1970_1_1(std::tm tm_time) {
-    return std::mktime(&tm_time)
+time_t DateTime::ToSecondsFrom1970_1_1(struct tm tm_time) {
+    return mktime(&tm_time);
 }
 
 /*
@@ -61,58 +62,58 @@ time_t DateTime::GetSecondsFrom1970_1_1() {
 /*
  * Get current UTC time
  */ 
-std::tm DateTime::GetCurrentUTCTime() {
-    std::time_t tt = GetSecondsFrom1970_1_1();
-    std::tm *now = std::gmtime(&tt);
-    return m_tm_time;
+struct tm DateTime::GetCurrentUTCTime() {
+    time_t tt = GetSecondsFrom1970_1_1();
+    struct tm *_time = gmtime(&tt);
+    return *_time;
 }
 
 /*
  * Get current UTC time
  */ 
-string DateTime::GetCurrentUTCTime(const char *format) {
-    m_tm_time = GetCurrentUTCTime();
-    return ToString(format);
+std::string DateTime::GetCurrentUTCTime(const char *format) {
+    struct tm localTime = GetCurrentUTCTime();
+    return ToString(format, localTime);
 }
 
 /*
  * Get current local time
  */ 
-std::tm DateTime::GetCurrentLocalTime() {
-    std::time_t tt = GetSecondsFrom1970_1_1();
-    std::tm *now = std::localtime(&tt);
-    return *now;
+struct tm DateTime::GetCurrentLocalTime() {
+    time_t tt = GetSecondsFrom1970_1_1();
+    struct tm *_time = localtime(&tt);
+    return *_time;
 }
 
 /*
  * Get current local time
  */ 
-string DateTime::GetCurrentLocalTime(const char *format) {
-    m_tm_time = GetCurrentLocalTime();
-    return ToString(format);
+std::string DateTime::GetCurrentLocalTime(const char *format) {
+    struct tm localTime = GetCurrentLocalTime();
+    return ToString(format, localTime);
 }
 
 /*
- * Convert from std::tm to string
+ * Convert from tm to string
  */
-string DateTime::ToString(const char *format) {
+std::string DateTime::ToString(const char *format, struct tm tm_time) {
     char buf[64] = {0};
-    strftme(buf, 64, format, &m_tm_time);
-    string result = buf;
+    strftime(buf, 64, format, &tm_time);
+    std::string result = buf;
     return result;
 }
 
 /*
- * Convert time format from std::tm to normal 
+ * Convert time format from struct tm to normal 
  * year, month, day, hour, minute, second
  */ 
-void DateTime::ConverteFormat(std::tm tm_time) {
-    m_year = tm_time->tm_year + 1900;
-    m_month = tm_time->tm_mon + 1;
-    m_day = tm_time->tm_mday；
-    m_hour = tm_time->tm_hour;
-    m_minute = tm_time->tm_min;
-    m_second = tm_time->tm_sec;
+void DateTime::ConvertFormat(struct tm tm_time) {
+    m_year = tm_time.tm_year + 1900;
+    m_month = tm_time.tm_mon + 1;
+    m_day = tm_time.tm_mday;
+    m_hour = tm_time.tm_hour;
+    m_minute = tm_time.tm_min;
+    m_second = tm_time.tm_sec;
 }
 
 /*
@@ -123,4 +124,5 @@ bool DateTime::IsLeapYear(int year) {
         return true;
     return false;
 }
+
 }
