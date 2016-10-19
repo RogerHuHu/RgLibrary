@@ -71,10 +71,16 @@ void SSHForward::run() {
     while(!m_cancel) {
         if(m_clientAddr == "") {
             m_clientAddr = tcpServer->Accept();
-            if(m_clientAddr != "")
+            if(m_clientAddr != "") {
                 log->RlogWrite(0, "Client Access: " + m_clientAddr, LOG_INFO);
+                std::cout << tcpServer->GetSockConnect() << std::endl;
+            }
         } else {
             
+            std::cout << tcpServer->GetSockConnect() << std::endl;
+            string data;
+            tcpServer->TcpReceive(data);
+            log->RlogWrite(0, "Receive data: " + data, LOG_INFO);
         }
         Sleep(100);
     }

@@ -40,6 +40,10 @@ const int TCP_BLOCK = 1;
 const int TCP_SERVER = 0;
 const int TCP_CLIENT = 1;
 
+typedef struct SocketInfo_Tpye {
+    int sockConnect;
+}
+
 /***************************************
  * \brief TCP communication
  * *************************************/
@@ -86,18 +90,6 @@ public:
      * \brief Destructor
      ***********************************************/
     ~TcpCom();
-    
-#if (defined _WIN32) || (defined _WIN64) 
-    /************************************************
-     * \brief Init socket when the operate system is windows
-     * 
-     * \param version  minor version
-     * \param highVersion  major version
-     * 
-     * \return init result (true/false)
-     ***********************************************/
-    bool WinsockInit(WORD version, WORD highVersion);
-#endif
 
     /************************************************
      * \brief Get socket file descriptor
@@ -184,14 +176,22 @@ public:
     /************************************************
      * \brief Get the value of socket connection
      *
-     * \param recvData  receive data buffer
-     * \param size  receive data buffer size
-     * \param flags  
-     *
      * \return the length of data receive successfully, -1 means receive failed
      ***********************************************/
     int GetSockConnect() const { return m_sockConnect; }
-    private:
+private:
+#if (defined _WIN32) || (defined _WIN64) 
+    /************************************************
+     * \brief Init socket when the operate system is windows
+     * 
+     * \param version  minor version
+     * \param highVersion  major version
+     * 
+     * \return init result (true/false)
+     ***********************************************/
+    bool WinsockInit(WORD version, WORD highVersion);
+#endif
+
     struct sockaddr_in m_socketAddr;  //internet socket address
     int *m_localSockFd;  //local socket file descriptor
     int m_socketFd;  //socket file descriptor

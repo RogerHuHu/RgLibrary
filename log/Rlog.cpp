@@ -11,7 +11,7 @@
 
 namespace log {
 
-const char *logLvlStr[] = 
+const char *logLvlStr[] =  ///< log level string
 {
     " DEBUG ",
     " INFO ",
@@ -129,6 +129,7 @@ void Rlog::RlogWrite(int logCode, const std::string &logInfo, LogLevelT_ level) 
             " " << 
             logLvlStr[level] << 
             logCode <<
+            " " <<
             logInfo << 
             std::endl;
         }
@@ -146,6 +147,7 @@ void Rlog::RlogWrite(int logCode, const std::string &logInfo, LogLevelT_ level) 
                           " " <<
                           logLvlStr[level] <<
                           logCode <<
+                          " " <<
                           logInfo << std::endl;
                 fileObj->WriteLine(stream.str());
             }

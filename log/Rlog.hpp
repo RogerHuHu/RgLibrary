@@ -1,9 +1,12 @@
-/************************************************
- * @file Rlog.hpp
+/**
+ * \file Rlog.hpp
+ * 
  * \brief 
- * @author Roger
- * @date 2016-08
- ***********************************************/
+ * 
+ * \author Roger
+ * 
+ * \date 2016-08
+ */
  
 #ifndef _R_LOG_H_
 #define _R_LOG_H_
@@ -19,13 +22,16 @@ using namespace file;
 using namespace rtime;
  
 namespace log {
-/***************************************
+/**
  * \brief log module
- * *************************************/
- 
+ */
+
+/** 
+ * \brief Log output type 
+ */
 typedef enum LogAppendersType { 
-    LOG_TERMINAL = 0, 
-    LOG_FILE = 1 
+    LOG_TERMINAL = 0,  ///< output log to terminal
+    LOG_FILE = 1       ///< output log to file
 } LogAppendersT_;
 
 typedef enum LogInfoSourceType { 
@@ -33,6 +39,9 @@ typedef enum LogInfoSourceType {
     LOG_RESOURCE_FILE = 1 
 } LogInfoSourceT_;
 
+/** 
+ * \brief Log level type 
+ */
 typedef enum LogLevelType { 
     LOG_DEBUG = 0,
     LOG_INFO = 1, 
@@ -40,8 +49,6 @@ typedef enum LogLevelType {
     LOG_ERROE = 3, 
     LOG_FATAL = 4 
 }  LogLevelT_;
-
-extern const char *logLvlStr[5];
 
 typedef enum LogErrorType {
     LOG_OK = 0,
@@ -55,7 +62,7 @@ typedef enum LogErrorType {
  
 class Rlog {
 public:
-    /************************************************
+    /**
      * \brief  Constructor
      * 
      * \param timeFormat     format of datetime in log content
@@ -63,92 +70,92 @@ public:
      * \param logInfoSource  specify where the log information come from
      * \param maxBackupNum   max backup file number of rolling file
      * \param maxFileSize    max file size of log file
-     ***********************************************/
+     */
     Rlog(const std::string &timeFormat, LogAppendersT_ appenders, LogInfoSourceT_ logInfoSource,
          int maxBackupNum, size_t maxFileSize);
     
-    /************************************************
+    /**
      * \brief Copy constuctor
      *
      * \param copy
-     ***********************************************/
+     */
     Rlog(const Rlog &copy);
     
-    /************************************************
+    /**
      * \brief Destructor
-     ***********************************************/
+     */
     ~Rlog();
     
-    /************************************************
+    /**
      * \brief It needs to open log appenders before record  
      *        started when the appender is file
      *        1.file
      *        2. ...
      * 
      * \return log appenders open result
-     ***********************************************/
+     */
     LogErrorT_ RlogOpen();
     
-    /************************************************
+    /**
      * \brief It needs to close log appenders before record
      *        stopped when the appender is file
      *        1.file
      *        2. ...
      * 
      * \return log appenders close result
-     ****0*******************************************/
+     */
     LogErrorT_ RlogClose();
     
-    /************************************************
+    /**
      * \brief Set resource file name
      * 
      * \param resourceFileName  name of resource file to set
-     ***********************************************/
+     */
     void SetResourceFilePath(const std::string &resourceFileName) { 
             m_resourceFileName = resourceFileName; }
             
-    /************************************************
+    /**
      * \brief Get resource file name
      * 
      * \param return  name of resource file which has been set
-     ***********************************************/
+     */
      std::string GetResourceFileName() const { return m_resourceFileName; }
      
-     /************************************************
+     /**
      * \brief Set name of file to record log information
      * 
      * \param logFileName  name of file to record log to set
-     ***********************************************/
+     */
     void SetLogFileName(const std::string &logFileName) { 
             m_logFileName = logFileName; }
             
-    /************************************************
+    /**
      * \brief Get name of file to record log information
      * 
      * \param return  name of file to record log information
-     ***********************************************/
+     */
      std::string GetLogFileName() const { return m_logFileName; }
      
-    /************************************************
+    /**
      * \brief Write log
      * 
      * \param logInfoCode  code of log information
      * \param level        log level
-     ***********************************************/
+     */
      void RlogWrite(LogInfoSourceT_ logInfoCode, LogLevelT_ level);
      
-    /************************************************
+    /**
      * \brief Write log
      * 
      * \param logCode  code of log information
      * \param logInfo  log information
      * \param level    log level
-     ***********************************************/
+     */
      void RlogWrite(int logCode, const std::string &logInfo, LogLevelT_ level);
      
-     /************************************************
+     /**
      * \brief Rollover log files
-     ***********************************************/
+     */
      void RollOverFiles();
 private:
     std::string m_timeFormat;         //format of datetime
